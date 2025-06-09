@@ -1,0 +1,67 @@
+def print_board(board):
+    print("\n")
+    for i in range(3):
+        print(f" {board[i*3]} | {board[i*3+1]} | {board[i*3+2]} ")
+        if i < 2:
+            print("---+---+---")
+    print("\n")
+
+def check_winner(board, player):
+    win_conditions = [
+        [0, 1, 2],  
+        [3, 4, 5],  
+        [6, 7, 8],  
+        [0, 3, 6], 
+        [1, 4, 7],  
+        [2, 5, 8], 
+        [0, 4, 8],  
+        [2, 4, 6]  
+    ]
+
+    for condition in win_conditions:
+        if board[condition[0]] == board[condition[1]] == board[condition[2]] == player:
+            return True
+    return False
+
+def is_draw(board):
+    return " " not in board
+
+def tic_tac_toe():
+    board = [" " for _ in range(9)]  
+    current_player = "X"  
+
+    print("🎮 Welcome to Tic Tac Toe (X vs O)")
+    print("Board positions are numbered from 0 to 8 as shown below:")
+    print_board([str(i) for i in range(9)])
+
+    while True:
+        print_board(board)
+        move = input(f"Player {current_player}, enter your move (0-8): ")
+
+        if not move.isdigit() or int(move) < 0 or int(move) > 8:
+            print("❌ Invalid input. Please enter a number between 0 and 8.")
+            continue
+
+        move = int(move)
+
+        if board[move] != " ":
+            print("⚠ That spot is already taken. Choose another one.")
+            continue
+
+        board[move] = current_player
+
+        if check_winner(board, current_player):
+            print_board(board)
+            print(f"🎉 Player {current_player} wins!")
+            break
+
+        if is_draw(board):
+            print_board(board)
+            print("🤝 It's a draw!")
+            break
+
+        current_player = "O" if current_player == "X" else "X"
+
+if __name__ == "__main__":
+    tic_tac_toe()
+
