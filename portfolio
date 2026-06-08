@@ -1,0 +1,308 @@
+index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ullam Kavya Portfolio</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+<body>
+
+<header>
+
+<nav>
+
+<div class="logo">Kavya Portfolio</div>
+
+<ul>
+<li><a href="#home">Home</a></li>
+<li><a href="#about">About</a></li>
+<li><a href="#skills">Skills</a></li>
+<li><a href="#projects">Projects</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+
+</nav>
+
+</header>
+
+<section class="hero" id="home">
+
+<div class="hero-content">
+
+<h1>Hi, I'm <span>Kavya</span></h1>
+
+<h2 id="typing"></h2>
+
+<p>
+Passionate Full Stack Developer skilled in
+HTML, CSS, JavaScript, Node.js, Express.js and MySQL.
+</p>
+
+<a href="#" class="btn">Download Resume</a>
+
+</div>
+
+<div class="hero-image">
+
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+
+</div>
+
+</section>
+
+<section id="about">
+
+<h1>About Me</h1>
+
+<div class="card">
+
+<p>
+I am a Computer Science Engineering student passionate
+about creating modern web applications and learning new technologies.
+
+I enjoy developing responsive websites and solving real-world problems
+through programming.
+</p>
+
+</div>
+
+</section>
+
+<section id="skills">
+
+<h1>Skills</h1>
+
+<div class="skills-container">
+
+<div class="skill">HTML</div>
+<div class="skill">CSS</div>
+<div class="skill">JavaScript</div>
+<div class="skill">Node.js</div>
+<div class="skill">Express.js</div>
+<div class="skill">MySQL</div>
+<div class="skill">Python</div>
+<div class="skill">Java</div>
+
+</div>
+
+</section>
+
+<section id="projects">
+
+<h1>Projects</h1>
+
+<div class="project-container">
+
+<div class="project-card">
+<h3>Smart Food Waste Reduction Platform</h3>
+<p>
+Connects restaurants and NGOs to reduce food wastage.
+</p>
+</div>
+
+<div class="project-card">
+<h3>Smart Home Simulator</h3>
+<p>
+Python-based smart home automation project.
+</p>
+</div>
+
+<div class="project-card">
+<h3>Portfolio Website</h3>
+<p>
+Responsive full-stack portfolio using modern web technologies.
+</p>
+</div>
+
+</div>
+
+</section>
+
+<section id="internship">
+
+<h1>Internship</h1>
+
+<div class="card">
+
+<h3>Python Developer Intern</h3>
+
+<p>Thiranex Technologies</p>
+
+<p>
+Worked on Python, MySQL and Web Development.
+</p>
+
+</div>
+
+</section>
+
+<section id="contact">
+
+<h1>Contact Me</h1>
+
+<div class="contact-box">
+
+<p><i class="fa-solid fa-envelope"></i> kavya@gmail.com</p>
+
+<p><i class="fa-solid fa-phone"></i> +91 XXXXX XXXXX</p>
+
+<p><i class="fa-brands fa-linkedin"></i> LinkedIn Profile</p>
+
+<p><i class="fa-brands fa-github"></i> GitHub Profile</p>
+
+</div>
+
+</section>
+
+<footer>
+
+<p>© 2026 Ullam Kavya | All Rights Reserved</p>
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+
+style.css
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+scroll-behavior:smooth;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#030321;
+color:white;
+}
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 80px;
+background:#0f0f4a;
+position:sticky;
+top:0;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+}
+
+nav ul{
+display:flex;
+list-style:none;
+}
+
+nav ul li{
+margin-left:25px;
+}
+
+nav ul li a{
+color:white;
+text-decoration:none;
+}
+
+nav ul li a:hover{
+color:#9b5de5;
+}
+
+.hero{
+display:flex;
+justify-content:space-around;
+align-items:center;
+min-height:90vh;
+padding:40px;
+}
+
+.hero-content{
+width:50%;
+}
+
+.hero-content h1{
+font-size:60px;
+}
+
+.hero-content span{
+color:#9b5de5;
+}
+
+.hero-content h2{
+margin:15px 0;
+color:#9b5de5;
+}
+
+.hero-content p{
+font-size:20px;
+line-height:35px;
+}
+
+.btn{
+display:inline-block;
+margin-top:20px;
+padding:12px 25px;
+background:#9b5de5;
+color:white;
+text-decoration:none;
+border-radius:8px;
+}
+
+.hero-image img{
+width:350px;
+}
+
+section{
+padding:80px;
+}
+
+script.js
+const texts = [
+"Full Stack Developer",
+"Web Developer",
+"Node.js Developer",
+"MySQL Enthusiast"
+];
+
+let count = 0;
+let index = 0;
+let currentText = "";
+let letter = "";
+
+(function type(){
+
+if(count === texts.length){
+count = 0;
+}
+
+currentText = texts[count];
+
+letter = currentText.slice(0, ++index);
+
+document.getElementById("typing").textContent = letter;
+
+if(letter.length === currentText.length){
+
+count++;
+index = 0;
+
+setTimeout(type, 1000);
+
+}else{
+
+setTimeout(type, 120);
+
+}
+}
