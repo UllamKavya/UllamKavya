@@ -1,0 +1,294 @@
+index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopKart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header>
+        <div class="logo">ShopKart</div>
+
+        <div class="search">
+            <input type="text" placeholder="Search products...">
+        </div>
+
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Products</a>
+            <a href="#">Categories</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Big Fashion Sale</h1>
+            <p>Up to 70% Off on Latest Collections</p>
+            <button>Shop Now</button>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories">
+        <h2>Shop By Category</h2>
+
+        <div class="category-container">
+            <div class="category">Fashion</div>
+            <div class="category">Electronics</div>
+            <div class="category">Shoes</div>
+            <div class="category">Accessories</div>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section class="products">
+        <h2>Trending Products</h2>
+
+        <div class="product-grid">
+
+            <div class="card">
+                <span class="discount">20% OFF</span>
+                <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400" alt="">
+                <h3>Smart Watch</h3>
+                <p>₹2,999</p>
+                <button>Add To Cart</button>
+            </div>
+
+            <div class="card">
+                <span class="discount">30% OFF</span>
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" alt="">
+                <h3>Headphones</h3>
+                <p>₹1,499</p>
+                <button>Add To Cart</button>
+            </div>
+
+            <div class="card">
+                <span class="discount">15% OFF</span>
+                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400" alt="">
+                <h3>Sports Shoes</h3>
+                <p>₹3,499</p>
+                <button>Add To Cart</button>
+            </div>
+
+            <div class="card">
+                <span class="discount">25% OFF</span>
+                <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400" alt="">
+                <h3>Camera</h3>
+                <p>₹19,999</p>
+                <button>Add To Cart</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <h3>ShopKart</h3>
+        <p>Your One Stop Shopping Destination</p>
+        <p>© 2026 All Rights Reserved</p>
+    </footer>
+
+</body>
+</html>
+style.css
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f5f5f5;
+}
+
+/* Navbar */
+
+header{
+    background:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 8%;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    position:sticky;
+    top:0;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    color:#ff5722;
+}
+
+.search input{
+    width:300px;
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:30px;
+}
+
+nav a{
+    margin-left:20px;
+    text-decoration:none;
+    color:#333;
+    font-weight:500;
+}
+
+nav a:hover{
+    color:#ff5722;
+}
+
+/* Hero */
+
+.hero{
+    height:500px;
+    background:url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600');
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    align-items:center;
+    padding-left:10%;
+    color:white;
+}
+
+.hero h1{
+    font-size:60px;
+}
+
+.hero p{
+    margin:15px 0;
+    font-size:22px;
+}
+
+.hero button{
+    padding:12px 30px;
+    border:none;
+    background:#ff5722;
+    color:white;
+    font-size:18px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+/* Categories */
+
+.categories{
+    padding:60px 8%;
+}
+
+.categories h2{
+    margin-bottom:30px;
+}
+
+.category-container{
+    display:flex;
+    gap:20px;
+}
+
+.category{
+    flex:1;
+    background:white;
+    padding:40px;
+    text-align:center;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    cursor:pointer;
+}
+
+/* Products */
+
+.products{
+    padding:60px 8%;
+}
+
+.products h2{
+    margin-bottom:30px;
+}
+
+.product-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+    position:relative;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+.card img{
+    width:100%;
+    height:250px;
+    object-fit:cover;
+}
+
+.card h3,
+.card p{
+    padding:10px 15px;
+}
+
+.card button{
+    width:90%;
+    margin:10px;
+    padding:10px;
+    background:#ff5722;
+    border:none;
+    color:white;
+    border-radius:5px;
+}
+
+.discount{
+    position:absolute;
+    top:10px;
+    left:10px;
+    background:red;
+    color:white;
+    padding:5px 10px;
+    border-radius:5px;
+}
+
+/* Footer */
+
+footer{
+    background:#222;
+    color:white;
+    text-align:center;
+    padding:40px;
+    margin-top:50px;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+header{
+    flex-direction:column;
+    gap:15px;
+}
+
+.search input{
+    width:100%;
+}
+
+.hero h1{
+    font-size:40px;
+}
+
+.category-container{
+    flex-direction:column;
+}
+}
