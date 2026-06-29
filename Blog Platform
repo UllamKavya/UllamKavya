@@ -1,0 +1,551 @@
+app.jsx
+import { useState, useEffect } from "react";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Navbar from "./components/Navbar";
+import CreatePost from "./components/CreatePost";
+import PostList from "./components/PostList";
+import "./App.css";
+
+function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [showRegister, setShowRegister] = useState(false);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+    if (user) {
+      setCurrentUser(user);
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  if (!isLoggedIn) {
+    return showRegister ? (
+      <Register setShowRegister={setShowRegister} />
+    ) : (
+      <Login
+        setIsLoggedIn={setIsLoggedIn}
+        setCurrentUser={setCurrentUser}
+        setShowRegister={setShowRegister}
+      />
+    );
+  }
+
+  return (
+    <div>
+      <Navbar
+        currentUser={currentUser}
+        setIsLoggedIn={setIsLoggedIn}
+        setCurrentUser={setCurrentUser}
+      />
+
+      <CreatePost currentUser={currentUser} />
+
+      <PostList currentUser={currentUser} />
+    </div>
+  );
+}
+
+export default App;
+
+main.jsx
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+app.css
+/* General */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f4f9;
+}
+
+/* Login & Register */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f4f4f9;
+}
+
+.auth-box {
+  background: white;
+  padding: 30px;
+  width: 350px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+}
+
+.auth-box h2 {
+  text-align: center;
+}
+
+.auth-box input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.auth-box button {
+  width: 100%;
+  padding: 10px;
+  background: #0077ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.auth-box button:hover {
+  background: #005fd4;
+}
+
+/* Navbar */
+.navbar {
+  background: #0077ff;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logout-btn {
+  background: red;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Create Post */
+.create-post {
+  width: 70%;
+  margin: 30px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.create-post input,
+.create-post textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.create-post button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: green;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Post List */
+.post-list {
+  width: 70%;
+  margin: auto;
+}
+
+.post-card {
+  background: white;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+}
+
+.post-card h3 {
+  margin-top: 0;
+}
+
+.post-card button {
+  margin-right: 10px;
+  margin-top: 10px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.post-card button:first-of-type {
+  background: orange;
+  color: white;
+}
+
+.post-card button:last-of-type {
+  background: red;
+  color: white;
+}
+
+/* Comments */
+.comment-section {
+  margin-top: 20px;
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+}
+
+.comment {
+  background: #f1f1f1;
+  padding: 8px;
+  border-radius: 5px;
+  margin: 8px 0;
+}
+
+.comment-section input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.comment-section button {
+  margin-top: 10px;
+  background: #0077ff;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+commentsection.jsx
+import { useState, useEffect } from "react";
+
+function CommentSection({ postId, currentUser }) {
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    const posts = JSON.parse(localStorage.getItem("posts")) || [];
+    const post = posts.find((p) => p.id === postId);
+
+    if (post) {
+      setComments(post.comments || []);
+    }
+  }, [postId]);
+
+  const addComment = () => {
+    if (comment.trim() === "") {
+      alert("Please enter a comment.");
+      return;
+    }
+
+    const posts = JSON.parse(localStorage.getItem("posts")) || [];
+
+    const updatedPosts = posts.map((post) => {
+      if (post.id === postId) {
+        const newComment = {
+          user: currentUser.username,
+          text: comment,
+        };
+
+        post.comments = [...(post.comments || []), newComment];
+      }
+      return post;
+    });
+
+    localStorage.setItem("posts", JSON.stringify(updatedPosts));
+
+    const updatedPost = updatedPosts.find((p) => p.id === postId);
+    setComments(updatedPost.comments);
+
+    setComment("");
+  };
+
+  return (
+    <div className="comment-section">
+      <h4>Comments</h4>
+
+      {comments.length === 0 ? (
+        <p>No comments yet.</p>
+      ) : (
+        comments.map((c, index) => (
+          <div key={index} className="comment">
+            <strong>{c.user}:</strong> {c.text}
+          </div>
+        ))
+      )}
+
+      <input
+        type="text"
+        placeholder="Write a comment..."
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+      />
+
+      <button onClick={addComment}>Add Comment</button>
+    </div>
+  );
+}
+
+export default CommentSection;
+
+createpost.jsx
+import { useState } from "react";
+
+function CreatePost({ currentUser }) {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  const handlePost = () => {
+    if (title.trim() === "" || content.trim() === "") {
+      alert("Please fill all fields");
+      return;
+    }
+
+    const posts = JSON.parse(localStorage.getItem("posts")) || [];
+
+    const newPost = {
+      id: Date.now(),
+      title,
+      content,
+      author: currentUser.username,
+      comments: []
+    };
+
+    posts.unshift(newPost);
+
+    localStorage.setItem("posts", JSON.stringify(posts));
+
+    alert("Post Created Successfully!");
+
+    setTitle("");
+    setContent("");
+
+    // Refresh page to show new post
+    window.location.reload();
+  };
+
+  return (
+    <div className="create-post">
+      <h2>Create New Blog Post</h2>
+
+      <input
+        type="text"
+        placeholder="Enter Post Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+
+      <textarea
+        placeholder="Write your blog here..."
+        rows="6"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+      ></textarea>
+
+      <button onClick={handlePost}>Publish Post</button>
+    </div>
+  );
+}
+
+export default CreatePost;
+
+login.jsx
+import { useState } from "react";
+
+function Login({ setIsLoggedIn, setCurrentUser, setShowRegister }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = () => {
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    const user = users.find(
+      (u) => u.username === username && u.password === password
+    );
+
+    if (user) {
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
+      setCurrentUser(user);
+      setIsLoggedIn(true);
+      alert("Login Successful!");
+    } else {
+      alert("Invalid Username or Password");
+    }
+  };
+
+  return (
+    <div className="auth-container">
+      <div className="auth-box">
+        <h2>Login</h2>
+
+        <input
+          type="text"
+          placeholder="Enter Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+
+        <input
+          type="password"
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button onClick={handleLogin}>Login</button>
+
+        <p>
+          Don't have an account?{" "}
+          <span
+            style={{ color: "blue", cursor: "pointer" }}
+            onClick={() => setShowRegister(true)}
+          >
+            Register
+          </span>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export default Login;
+navbar.jsx
+function Navbar({ currentUser, setIsLoggedIn, setCurrentUser }) {
+  const handleLogout = () => {
+    localStorage.removeItem("loggedInUser");
+    setCurrentUser(null);
+    setIsLoggedIn(false);
+    alert("Logged out successfully!");
+  };
+
+  return (
+    <nav className="navbar">
+      <h2>📝 Blog Platform</h2>
+
+      <div className="nav-right">
+        <span>Welcome, {currentUser?.username}</span>
+
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
+    </nav>
+  );
+}
+
+export default Navbar;
+postlist.jsx
+import { useState, useEffect } from "react";
+import CommentSection from "./CommentSection";
+
+function PostList({ currentUser }) {
+  const [posts, setPosts] = useState([]);
+  const [editId, setEditId] = useState(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editContent, setEditContent] = useState("");
+
+  useEffect(() => {
+    const storedPosts = JSON.parse(localStorage.getItem("posts")) || [];
+    setPosts(storedPosts);
+  }, []);
+
+  const deletePost = (id) => {
+    const updatedPosts = posts.filter((post) => post.id !== id);
+    setPosts(updatedPosts);
+    localStorage.setItem("posts", JSON.stringify(updatedPosts));
+  };
+
+  const startEdit = (post) => {
+    setEditId(post.id);
+    setEditTitle(post.title);
+    setEditContent(post.content);
+  };
+
+  const saveEdit = () => {
+    const updatedPosts = posts.map((post) =>
+      post.id === editId
+        ? { ...post, title: editTitle, content: editContent }
+        : post
+    );
+
+    setPosts(updatedPosts);
+    localStorage.setItem("posts", JSON.stringify(updatedPosts));
+    setEditId(null);
+  };
+
+  return (
+    <div className="post-list">
+      <h2>All Blog Posts</h2>
+
+      {posts.length === 0 ? (
+        <p>No posts available.</p>
+      ) : (
+        posts.map((post) => (
+          <div className="post-card" key={post.id}>
+            {editId === post.id ? (
+              <>
+                <input
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                />
+
+                <textarea
+                  value={editContent}
+                  onChange={(e) => setEditContent(e.target.value)}
+                />
+
+                <button onClick={saveEdit}>Save</button>
+              </>
+            ) : (
+              <>
+                <h3>{post.title}</h3>
+
+                <p>{post.content}</p>
+
+                <small>By: {post.author}</small>
+
+                {currentUser.username === post.author && (
+                  <div>
+                    <button onClick={() => startEdit(post)}>Edit</button>
+
+                    <button onClick={() => deletePost(post.id)}>
+                      Delete
+                    </button>
+                  </div>
+                )}
+
+                <CommentSection
+                  postId={post.id}
+                  currentUser={currentUser}
+                />
+              </>
+            )}
+          </div>
+        ))
+      )}
+    </div>
+  );
+}
+
+export default PostList;
+
+register.jsx
+v
